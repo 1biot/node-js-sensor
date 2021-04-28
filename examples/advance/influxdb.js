@@ -56,5 +56,6 @@ myDHTSensor.use(function(sensorCtx, next) {
 })
 
 myDHTSensor.use(influxMiddleware)
-    .setInterval(60000, true)
+    .setInterval(5000, true)
+    .setLimit(2)
     .run()

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const Sensor = require('../../src/Sensor')
-const SensorManager = require('../../src/SensorManager')
+const NodeJsSensor = require('../../src/')
 
 function getFakeData() {
     return new Promise((resolve, reject) => {
@@ -15,7 +14,7 @@ function getFakeData() {
     })
 }
 
-const sensor = new Sensor({
+const sensor = new NodeJsSensor.Sensor({
     name: 'Testovací sensor'
 })
 
@@ -41,7 +40,7 @@ sensor.on('read', async (sensorCtx) => {
 sensor.addData('Teplota', '°C')
 sensor.addData('Vlhkost vzduchu', '%')
 
-const sensorManager = new SensorManager(sensor)
+const sensorManager = new NodeJsSensor.SensorManager(sensor)
 
 sensorManager.use(function(sensorCtx, next){
     console.log(`[${sensorCtx.name}] Sensor reading finished`)
@@ -59,7 +58,7 @@ sensorManager.use(function(sensorCtx) {
     console.log(`[${sensorCtx.name}] [${sensorCtx.data[1].name}] ${sensorCtx.data[1].value}${sensorCtx.data[1].unit}`)
 })
 
-sensorManager.setInterval(4000)
-    .setTimeout(60000)
-    .setLimit(2)
+sensorManager.setInterval(2000)
+    .setTimeout(10000)
+    .setLimit(4)
     .run()

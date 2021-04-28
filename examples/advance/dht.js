@@ -7,9 +7,6 @@ const prettyOutput = function(name, dataObject) {
     console.log(`[${name}] [${Date.now()}] [${dataObject.name}] ${dataObject.value}${dataObject.unit}`)
 }
 
-myDHTSensor.setInterval(5000)
-    .setTimeout(60000)
-
 myDHTSensor.use(function(sensorCtx, next) {
     console.log(`[${sensorCtx.name}] [${Date.now()}] Sensor reading finished`)
     console.log(`[${sensorCtx.name}] [${Date.now()}] Reading counter #${myDHTSensor.getCounter()}`)
@@ -28,4 +25,6 @@ myDHTSensor.use(function(sensorCtx) {
     prettyOutput(sensorCtx.name, sensorCtx.data[1])
 })
 
-myDHTSensor.run()
+myDHTSensor.setInterval(5000)
+    .setLimit(2)
+    .run()

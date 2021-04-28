@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const Sensor = require('../../src/Sensor')
+const NodeJsSensor = require('../../src/')
 
 // async receiving the data
 const getFakeData = function() {
@@ -15,7 +15,7 @@ const getFakeData = function() {
     })
 }
 
-const sensor = new Sensor({
+const sensor = new NodeJsSensor.Sensor({
     name: 'My Custom Sensor'
 })
 

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const Sensor = require('../src/Sensor')
-const SensorManager = require('../src/SensorManager')
+const NodeJsSensor = require('../src/')
 const dhtSensor = require("node-dht-sensor")
 
 const DHT_PIN = 4
@@ -11,7 +10,7 @@ const DHT_TYPE = {
     DHT22: 22,
 }
 
-const sensor = new Sensor({
+const sensor = new NodeJsSensor.Sensor({
     name: 'DHT22 - Bedroom'
 }, {
     type: DHT_TYPE.DHT22,
@@ -45,4 +44,4 @@ sensor.on('read', async function(sensorCtx) {
     })
 })
 
-module.exports = new SensorManager(sensor)
+module.exports = new NodeJsSensor.SensorManager(sensor)

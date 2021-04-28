@@ -1,6 +1,6 @@
 {
   "name": "node-js-sensor",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Abstract sensor layer with manager",
   "main": "./src/index.js",
   "scripts": {
@@ -9,7 +9,6 @@
     "example-advance-basic": "node examples/advance/index.js",
     "example-advance-dht": "node examples/advance/dht.js",
     "example-advance-influxdb": "node examples/advance/influxdb.js",
-    "f-example-advance-influxdb": "nodemon examples/advance/influxdb.js",
     "example-full": "node examples/full/index.js",
     "test": "mocha"
   },

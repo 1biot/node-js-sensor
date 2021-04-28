@@ -31,9 +31,9 @@ sensor.on('read', (sensorCtx) => {
 const sensorManager = new SensorManager(sensor)
 
 // repeat every 10s
-sensorManager.setInterval(10000)
+sensorManager.setInterval(2000)
 
 // for one minute
-sensorManager.setTimeout(60000)
+sensorManager.setTimeout(6000)
 
 sensorManager.run()
