@@ -1,7 +1,7 @@
 {
   "name": "node-js-sensor",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.3",
+  "description": "Abstract sensor layer with manager",
   "main": "./src/index.js",
   "scripts": {
     "example-basic": "node examples/basic/index.js",
@@ -14,16 +14,20 @@
     "test": "mocha"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/1biot/node-js-sensor.git"
+    "type": "git",
+    "url": "git+https://github.com/1biot/node-js-sensor.git"
   },
   "keywords": [
-      "node", "js", "sensor", "influxdb", "dht22"
+    "node",
+    "js",
+    "sensor",
+    "influxdb",
+    "dht22"
   ],
   "author": "Tomas Lebeda",
   "license": "ISC",
   "bugs": {
-      "url": "https://github.com/1biot/node-js-sensor/issues"
+    "url": "https://github.com/1biot/node-js-sensor/issues"
   },
   "homepage": "https://github.com/1biot/node-js-sensor",
   "devDependencies": {
@@ -34,5 +38,9 @@
     "influxdb-nodejs": "^3.1.0",
     "node-dht-sensor": "^0.4.3",
     "winston": "^3.3.3"
+  },
+  "directories": {
+    "example": "examples",
+    "test": "test"
   }
 }
