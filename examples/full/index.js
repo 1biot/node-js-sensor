@@ -15,7 +15,7 @@ function getFakeData() {
 }
 
 const sensor = new NodeJsSensor.Sensor({
-    name: 'Testovací sensor'
+    name: 'My Custom Sensor'
 })
 
 sensor.on('init', function(sensorCtx){
@@ -31,20 +31,15 @@ sensor.on('read', async (sensorCtx) => {
     sensorCtx.finish()
 })
 
-/*sensor.on('finish', function(sensorCtx){
-    console.log(`[${sensorCtx.name}] Sensor reading finished`)
-    console.log(`[${sensorCtx.name}] Data output:`)
-    console.log(sensorCtx.data)
-})*/
-
-sensor.addData('Teplota', '°C')
-sensor.addData('Vlhkost vzduchu', '%')
+sensor.addData('Temperature', '°C')
+sensor.addData('Humidity', '%')
 
 const sensorManager = new NodeJsSensor.SensorManager(sensor)
 
 sensorManager.use(function(sensorCtx, next){
     console.log(`[${sensorCtx.name}] Sensor reading finished`)
     next()
+    console.log(`[${sensorCtx.name}] Sensor middleware are finished`)
 })
 
 // middleware for temperature

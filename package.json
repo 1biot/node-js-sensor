@@ -1,6 +1,6 @@
 {
   "name": "node-js-sensor",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Abstract sensor layer with manager",
   "main": "./src/index.js",
   "scripts": {

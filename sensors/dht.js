@@ -37,8 +37,14 @@ sensor.on('read', async function(sensorCtx) {
         if (!res) {
             reject(res)
         }
+
+        if (!parseFloat(res.temperature.toFixed(1)) && !parseFloat(res.humidity.toFixed(1))) {
+            reject(new Error('Sensor does not reading'))
+        }
+
         sensorCtx.data[0].value = res.temperature.toFixed(1)
         sensorCtx.data[1].value = res.humidity.toFixed(1)
+        sensorCtx.setLastReadingTime()
         sensorCtx.finish()
         resolve()
     })

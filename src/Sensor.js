@@ -28,7 +28,7 @@ class Sensor extends EventEmitter {
      * @param {Object} sensorSettings - Settings for real sensor
      * @param {string} options.name - The name of the sensor.
      */
-    constructor(options, sensorSettings) {
+    constructor(options, sensorSettings = undefined) {
         super()
 
         if (typeof options.name === 'undefined') {
@@ -72,7 +72,7 @@ class Sensor extends EventEmitter {
      */
     read() {
         return new Promise((resolve, reject) => {
-            if (!this.#initialized) {
+            if (!this.isInitialized()) {
                 return reject(Error(`Sensor "${this.name}" is not initialized`))
             }
 
