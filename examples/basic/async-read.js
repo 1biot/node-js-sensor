@@ -23,6 +23,7 @@ sensor.addData('Temperature', '°C') // data[0]
 sensor.addData('Humidity', '%') // data[1]
 
 sensor.on('init', function(sensorCtx) {
+    sensorCtx.setInitialized()
     console.log(`[${sensorCtx.name}] Sensor initialized`)
 })
 

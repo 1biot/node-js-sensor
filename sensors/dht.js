@@ -26,6 +26,7 @@ sensor.on('init', function(sensorCtx) {
             sensorCtx.getSensorSettings().type,
             sensorCtx.getSensorSettings().pin
         )
+        sensorCtx.setInitialized()
     } catch (e) {
         console.log(e)
     }

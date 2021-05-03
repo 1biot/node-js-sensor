@@ -61,10 +61,13 @@ class Sensor extends EventEmitter {
      * @returns Sensor
      */
     init() {
-        this.#initialized = new Date()
         this.emit('init', this)
         this.#state = SENSOR_STATE.INIT
         return this
+    }
+
+    setInitialized() {
+        this.#initialized = new Date()
     }
 
     /**

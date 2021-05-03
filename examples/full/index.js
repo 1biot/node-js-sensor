@@ -19,6 +19,7 @@ const sensor = new NodeJsSensor.Sensor({
 })
 
 sensor.on('init', function(sensorCtx){
+    sensorCtx.setInitialized()
     console.log(`[${sensorCtx.name}] Sensor initialized`)
 })
 

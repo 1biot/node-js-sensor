@@ -6,9 +6,6 @@
   "scripts": {
     "example-basic": "node examples/basic/index.js",
     "example-basic-async-read": "node examples/basic/async-read.js",
-    "example-advance-basic": "node examples/advance/index.js",
-    "example-advance-dht": "node examples/advance/dht.js",
-    "example-advance-influxdb": "node examples/advance/influxdb.js",
     "example-full": "node examples/full/index.js",
     "test": "mocha"
   },
@@ -20,8 +17,7 @@
     "node",
     "js",
     "sensor",
-    "influxdb",
-    "dht22"
+    "manager"
   ],
   "author": "Tomas Lebeda",
   "license": "ISC",
@@ -30,13 +26,7 @@
   },
   "homepage": "https://github.com/1biot/node-js-sensor",
   "devDependencies": {
-    "mocha": "^8.3.2",
-    "nodemon": "^2.0.7"
-  },
-  "dependencies": {
-    "influxdb-nodejs": "^3.1.0",
-    "node-dht-sensor": "^0.4.3",
-    "winston": "^3.3.3"
+    "mocha": "^8.3.2"
   },
   "directories": {
     "example": "examples",
