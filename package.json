@@ -4,9 +4,9 @@
   "description": "Abstract sensor layer with manager",
   "main": "./src/index.js",
   "scripts": {
-    "example-basic": "node examples/basic/index.js",
-    "example-basic-async-read": "node examples/basic/async-read.js",
-    "example-full": "node examples/full/index.js",
+    "example-basic": "node examples/basic.js",
+    "example-basic-async": "node examples/basic-async.js",
+    "example-full": "node examples/full.js",
     "test": "mocha"
   },
   "repository": {

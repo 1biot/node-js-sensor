@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const NodeJsSensor = new require('../../src/')
+const NodeJsSensor = new require('../src/')
 
 const sensor = new NodeJsSensor.Sensor({
     name: 'My Custom Sensor'

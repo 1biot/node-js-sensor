@@ -1,7 +1,5 @@
 .idea
 sensors
-examples/advance
-examples/test
 node_modules
 package-lock.json
 index.js

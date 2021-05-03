@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const NodeJsSensor = require('../../src/')
+const NodeJsSensor = require('../src')
 
 function getFakeData() {
     return new Promise((resolve, reject) => {
