@@ -30,6 +30,10 @@
   },
   "directories": {
     "example": "examples",
+    "src": "src",
     "test": "test"
-  }
+  },
+  "files": [
+    "src/index.js"
+  ]
 }
