@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
-const Sensor = require('./Sensor')
+/**
+ * @callback sensorCallback
+ * @param {Sensor} responseCode
+ * @param {next} responseMessage
+ */
 
 class SensorManager {
 
@@ -66,7 +70,7 @@ class SensorManager {
     }
 
     /**
-     * @param {((function(...[*]=))|*[])[]} middleware
+     * @param {sensorCallback} middleware
      */
     use(...middleware) {
         this.#middlewares.push(...middleware)
