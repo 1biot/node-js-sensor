@@ -2,7 +2,7 @@
   "name": "node-js-sensor",
   "version": "1.0.8",
   "description": "Abstract sensor layer with manager",
-  "main": "./src/index.js",
+  "main": "./src/",
   "scripts": {
     "example-basic": "node examples/basic.js",
     "example-basic-async": "node examples/basic-async.js",
@@ -28,12 +28,8 @@
   "devDependencies": {
     "mocha": "^8.3.2"
   },
-  "directories": {
-    "example": "examples",
-    "src": "src",
-    "test": "test"
-  },
   "files": [
-    "src/index.js"
+    "/src",
+    "/examples"
   ]
 }
