@@ -1,13 +1,14 @@
 {
   "name": "node-js-sensor",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Abstract sensor layer with manager",
-  "main": "./src/",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
+    "build": "tsc -d",
     "example-basic": "node examples/basic.js",
     "example-basic-async": "node examples/basic-async.js",
-    "example-full": "node examples/full.js",
-    "test": "mocha"
+    "example-full": "node examples/full.js"
   },
   "repository": {
     "type": "git",
@@ -26,10 +27,10 @@
   },
   "homepage": "https://github.com/1biot/node-js-sensor",
   "devDependencies": {
-    "mocha": "^8.3.2"
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
   },
   "files": [
-    "/src",
-    "/examples"
+    "/dist"
   ]
 }

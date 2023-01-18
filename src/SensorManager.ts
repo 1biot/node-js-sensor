@@ -1,38 +1,23 @@
-#!/usr/bin/env node
-'use strict';
+import {Sensor} from './Sensor'
 
-/**
- * @callback sensorCallback
- * @param {Sensor} responseCode
- * @param {next} responseMessage
- */
+interface SensorCallback {
+    (sensor: Sensor, next?: () => void): void;
+}
 
-class SensorManager {
+export class SensorManager {
 
-    sensor
-    timeout
-    interval
-    limit
+    sensor: Sensor
+    timeout?: number
+    interval?: number
+    limit?: number
 
-    #fireAtStart = false
-    #counter = 0
-    #internalInterval
-    #middlewares = []
+    private fireAtStart: boolean = false
+    private counter: number = 0
+    private internalInterval?: NodeJS.Timer
+    private middlewares: Array<SensorCallback>
 
-    /**
-     * @param {Sensor} sensor
-     */
-    constructor(sensor) {
-        if (
-            typeof sensor.init !== 'function'
-            || typeof sensor.read !== 'function'
-            || typeof sensor.finish !== 'function'
-            || typeof sensor.addData !== 'function'
-            || typeof sensor.hasState !== 'function'
-        ) {
-            throw 'Included object is not type of Sensor'
-        }
-
+    constructor(sensor: Sensor)
+    {
         this.sensor = sensor
         if (!this.sensor.isInitialized()) {
             this.sensor.init()
@@ -41,43 +26,37 @@ class SensorManager {
         this.sensor.on('finish', () => {
             this.execute().catch(console.log)
         })
+
+        this.middlewares = []
     }
 
-    /**
-     * @param {number} timeout
-     */
-    setTimeout(timeout) {
+    setTimeout(timeout: number): this
+    {
         this.timeout = timeout
         return this
     }
 
-    /**
-     * @param {number} interval
-     * * @param {boolean} fireAtStart
-     */
-    setInterval(interval, fireAtStart = false) {
-        this.#fireAtStart = fireAtStart
+    setInterval(interval: number, fireAtStart: boolean = false): this
+    {
+        this.fireAtStart = fireAtStart
         this.interval = interval
         return this
     }
 
-    /**
-     * @param {number} limit
-     */
-    setLimit(limit) {
+    setLimit(limit: number): this
+    {
         this.limit = limit
         return this
     }
 
-    /**
-     * @param {sensorCallback} middleware
-     */
-    use(...middleware) {
-        this.#middlewares.push(...middleware)
+    use(...middleware: SensorCallback[]): this
+    {
+        this.middlewares.push(...middleware)
         return this
     }
 
-    run() {
+    run(): number
+    {
         if (typeof this.interval === 'undefined') {
             if (typeof this.timeout === 'undefined') {
                 setImmediate(() => {
@@ -96,13 +75,13 @@ class SensorManager {
             return 0
         }
 
-        if (this.#fireAtStart) {
+        if (this.fireAtStart) {
             setImmediate(() => {
                 this.runOnce().catch(console.log)
             })
         }
 
-        this.#internalInterval = setInterval(() => {
+        this.internalInterval = setInterval(() => {
             this.runOnce().catch(console.log)
         }, this.interval)
 
@@ -115,9 +94,10 @@ class SensorManager {
         return 0
     }
 
-    runOnce() {
-        this.#counter++
-        if (typeof this.limit !== 'undefined' && this.#counter > this.limit) {
+    runOnce(): Promise<Sensor>
+    {
+        this.counter++
+        if (typeof this.limit !== 'undefined' && this.counter > this.limit) {
             return new Promise((resolve, reject) => {
                 this.stop()
                 reject(`[${this.sensor.name}] [ERROR] Limit occurred`)
@@ -126,25 +106,27 @@ class SensorManager {
         return this.sensor.read();
     }
 
-    stop() {
-        if (typeof this.#internalInterval !== 'undefined') {
-            clearInterval(this.#internalInterval)
+    stop()
+    {
+        if (typeof this.internalInterval !== 'undefined') {
+            clearInterval(this.internalInterval)
         }
     }
 
-    getCounter() {
-        return this.#counter
+    getCounter(): number
+    {
+        return this.counter
     }
 
     async execute() {
         let prevIndex = -1
-        const middlewares = this.#middlewares
-        const runner = async (index) => {
+        const middlewares = this.middlewares
+        const runner = async (index: number) => {
             if (index === prevIndex) {
                 throw new Error('next() called multiple times')
             }
             prevIndex = index
-            const middleware = middlewares[index]
+            const middleware: SensorCallback = middlewares[index]
             if (middleware) {
                 await middleware(this.sensor, () => {
                     return runner(index + 1)
@@ -154,5 +136,3 @@ class SensorManager {
         await runner(0)
     }
 }
-
-module.exports = SensorManager

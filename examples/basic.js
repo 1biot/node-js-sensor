@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const NodeJsSensor = new require('../src/')
+const NodeJsSensor = require('../dist')
 
 const sensor = new NodeJsSensor.Sensor({
     name: 'My Custom Sensor'
@@ -18,12 +18,12 @@ sensor.on('init', function(sensorCtx) {
 sensor.on('read', (sensorCtx) => {
     console.log(`[${sensorCtx.name}] Start reading data ...`)
 
-    sensorCtx.data[0].value = (Math.random() * 50).toFixed(2)
-    sensorCtx.data[1].value = (Math.random() * 100).toFixed(2)
+    sensorCtx.data.get('Temperature').value = (Math.random() * 50).toFixed(2)
+    sensorCtx.data.get('Humidity').value = (Math.random() * 100).toFixed(2)
 
     console.log(`[${sensorCtx.name}] Reading data finished`)
-    console.log(`[${sensorCtx.name}] [${sensorCtx.data[0].name}] ${sensorCtx.data[0].value}${sensorCtx.data[0].unit}`)
-    console.log(`[${sensorCtx.name}] [${sensorCtx.data[1].name}] ${sensorCtx.data[1].value}${sensorCtx.data[1].unit}`)
+    console.log(`[${sensorCtx.name}] [${sensorCtx.data.get('Temperature').name}] ${sensorCtx.data.get('Temperature').value}${sensorCtx.data.get('Temperature').unit}`)
+    console.log(`[${sensorCtx.name}] [${sensorCtx.data.get('Humidity').name}] ${sensorCtx.data.get('Humidity').value}${sensorCtx.data.get('Humidity').unit}`)
 })
 
 sensor.init()

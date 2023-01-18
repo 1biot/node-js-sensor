@@ -15,9 +15,8 @@ npm i node-js-sensor
 ## API
 ### Sensor.js
 Is event-driven object offering base events and adding listeners for runs the sensor reading
-#### constructor(options, sensorOptions)
+#### constructor(options)
 - _**options**_ - include only parameter `name` only for now.
-- _**sensorOptions**_ - are custom options for future implemented sensor. It is not required
 
 #### addData(name, unit): self
 - Adds data object to the sensor which will you use for future purposes. It is create object with `name`, `unit` and `value` properties
@@ -52,9 +51,6 @@ const SENSOR_STATE = {
 
 #### getReadingTime(): ?int
 - return how long was from fire event `read` and before fire event `finish`
-
-#### getSensorSettings(): object
-- return customer sensor settings what you need and sets on the beginning
 
 #### isInitialized(): bool
 - return when you call `initialize()` method
@@ -279,7 +275,9 @@ sensorManager.setInterval(2000)
 ## Testing
 
 ``` bash
-$ npm run test
+$ npm run example-basic
+$ npm run example-basic-async
+$ npm run example-full
 ```
 
 ## Credits

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const NodeJsSensor = require('../src')
+const NodeJsSensor = require('../dist')
 
 // async receiving the data
 const getFakeData = function() {
@@ -35,8 +35,8 @@ sensor.on('read', async (sensorCtx) => {
             sensorCtx.setLastReadingTime()
 
 
-            sensorCtx.data[0].value = fakeData.temperature
-            sensorCtx.data[1].value = fakeData.humidity
+            sensorCtx.data.get('Temperature').value = fakeData.temperature
+            sensorCtx.data.get('Humidity').value = fakeData.humidity
 
             sensorCtx.finish()
             resolve()
@@ -49,8 +49,8 @@ sensor.on('read', async (sensorCtx) => {
 
 sensor.on('finish', function(sensorCtx){
     console.log(`[${sensorCtx.name}] Reading data finished`)
-    console.log(`[${sensorCtx.name}] [${sensorCtx.data[0].name}] ${sensorCtx.data[0].value}${sensorCtx.data[0].unit}`)
-    console.log(`[${sensorCtx.name}] [${sensorCtx.data[1].name}] ${sensorCtx.data[1].value}${sensorCtx.data[1].unit}`)
+    console.log(`[${sensorCtx.name}] [${sensorCtx.data.get('Temperature').name}] ${sensorCtx.data.get('Temperature').value}${sensorCtx.data.get('Temperature').unit}`)
+    console.log(`[${sensorCtx.name}] [${sensorCtx.data.get('Humidity').name}] ${sensorCtx.data.get('Humidity').value}${sensorCtx.data.get('Humidity').unit}`)
 })
 
 sensor.init()
