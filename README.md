@@ -1,6 +1,7 @@
 # node-js-sensor
 
-[![Latest Version on NPM](https://img.shields.io/npm/v/node-js-sensor.svg?style=flat-square)](https://npmjs.com/package/:package_name)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![Latest Version on NPM](https://img.shields.io/npm/v/node-js-sensor.svg?style=flat-square)](https://npmjs.com/package/node-js-sensor)
 
 Node-Js-Sensor is universal implementation interface for any sensor. It is event-driven object.
 Including the manager where you can set the timeout, intervals and etc. Manager implementing middleware after successfully
