@@ -11,10 +11,10 @@ export class SensorManager {
     interval?: number
     limit?: number
 
-    private fireAtStart: boolean = false
-    private counter: number = 0
-    private internalInterval?: NodeJS.Timer
-    private middlewares: Array<SensorCallback>
+    #fireAtStart: boolean = false
+    #counter: number = 0
+    #internalInterval?: NodeJS.Timer
+    readonly #middlewares: Array<SensorCallback> = []
 
     constructor(sensor: Sensor)
     {
@@ -26,8 +26,6 @@ export class SensorManager {
         this.sensor.on('finish', () => {
             this.execute().catch(console.log)
         })
-
-        this.middlewares = []
     }
 
     setTimeout(timeout: number): this
@@ -38,7 +36,7 @@ export class SensorManager {
 
     setInterval(interval: number, fireAtStart: boolean = false): this
     {
-        this.fireAtStart = fireAtStart
+        this.#fireAtStart = fireAtStart
         this.interval = interval
         return this
     }
@@ -51,7 +49,7 @@ export class SensorManager {
 
     use(...middleware: SensorCallback[]): this
     {
-        this.middlewares.push(...middleware)
+        this.#middlewares.push(...middleware)
         return this
     }
 
@@ -75,13 +73,13 @@ export class SensorManager {
             return 0
         }
 
-        if (this.fireAtStart) {
+        if (this.#fireAtStart) {
             setImmediate(() => {
                 this.runOnce().catch(console.log)
             })
         }
 
-        this.internalInterval = setInterval(() => {
+        this.#internalInterval = setInterval(() => {
             this.runOnce().catch(console.log)
         }, this.interval)
 
@@ -96,8 +94,8 @@ export class SensorManager {
 
     runOnce(): Promise<Sensor>
     {
-        this.counter++
-        if (typeof this.limit !== 'undefined' && this.counter > this.limit) {
+        this.#counter++
+        if (typeof this.limit !== 'undefined' && this.#counter > this.limit) {
             return new Promise((resolve, reject) => {
                 this.stop()
                 reject(`[${this.sensor.name}] [ERROR] Limit occurred`)
@@ -108,19 +106,19 @@ export class SensorManager {
 
     stop()
     {
-        if (typeof this.internalInterval !== 'undefined') {
-            clearInterval(this.internalInterval)
+        if (typeof this.#internalInterval !== 'undefined') {
+            clearInterval(this.#internalInterval)
         }
     }
 
     getCounter(): number
     {
-        return this.counter
+        return this.#counter
     }
 
     async execute() {
         let prevIndex = -1
-        const middlewares = this.middlewares
+        const middlewares = this.#middlewares
         const runner = async (index: number) => {
             if (index === prevIndex) {
                 throw new Error('next() called multiple times')

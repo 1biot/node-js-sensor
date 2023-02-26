@@ -23,16 +23,28 @@ export class Sensor extends EventEmitter {
     readonly name: string
     data: Map<string, SensorData>
 
-    private state = SENSOR_STATE.OFF
-    private initialized?: Date
-    private readStart?: Date
-    private readFinish?: Date
-    private lastReading?: Date
+    #state = SENSOR_STATE.OFF
+    #initialized?: Date
+    #readStart?: Date
+    #readFinish?: Date
+    #lastReading?: Date
 
-    constructor(options: SensorOptions)
+    constructor(options: string | SensorOptions)
     {
         super()
-        this.name = options.name
+
+        let sensorName: string | undefined
+        if (typeof options === 'string') {
+            sensorName = options
+        } else if (typeof options === 'object') {
+            sensorName = options?.name
+        }
+
+        if (typeof sensorName === 'undefined') {
+            throw Error('Could not resolve sensor name')
+        }
+
+        this.name = sensorName
         this.data = new Map<string, SensorData>();
     }
 
@@ -50,14 +62,14 @@ export class Sensor extends EventEmitter {
 
     init(): this
     {
-        this.state = SENSOR_STATE.INIT
+        this.#state = SENSOR_STATE.INIT
         this.emit('init', this)
         return this
     }
 
     setInitialized()
     {
-        this.initialized = new Date()
+        this.#initialized = new Date()
     }
 
     read(): Promise<Sensor>
@@ -75,8 +87,8 @@ export class Sensor extends EventEmitter {
                 return reject(Error(`Sensor "${this.name}" is still reading or not initialized`))
             }
 
-            this.state = SENSOR_STATE.READ
-            this.readStart = new Date()
+            this.#state = SENSOR_STATE.READ
+            this.#readStart = new Date()
             this.emit('read', this)
             return resolve(this)
         })
@@ -84,25 +96,25 @@ export class Sensor extends EventEmitter {
 
     setLastReadingTime(): Sensor
     {
-        this.lastReading = new Date()
+        this.#lastReading = new Date()
         return this
     }
 
     getLastReadingTime(): Date | undefined
     {
-        return this.lastReading
+        return this.#lastReading
     }
 
     finish(): void
     {
-        this.readFinish = new Date()
-        this.state = SENSOR_STATE.FINISH
+        this.#readFinish = new Date()
+        this.#state = SENSOR_STATE.FINISH
         this.emit('finish', this)
     }
 
     hasState(state: SENSOR_STATE): boolean
     {
-        return this.state === state
+        return this.#state === state
     }
 
     /**
@@ -114,31 +126,31 @@ export class Sensor extends EventEmitter {
             return true;
         }
 
-        if (typeof this.lastReading === 'undefined') {
+        if (typeof this.#lastReading === 'undefined') {
             return false
         }
 
         let actualDateTime = new Date();
-        let diff = actualDateTime.getTime() - this.lastReading.getTime();
+        let diff = actualDateTime.getTime() - this.#lastReading.getTime();
 
         return diff <= interval
     }
 
     getReadingTime(): number | null
     {
-        if (typeof this.readStart === 'undefined') {
+        if (typeof this.#readStart === 'undefined') {
             return null
         }
 
-        if (typeof this.readFinish === 'undefined') {
+        if (typeof this.#readFinish === 'undefined') {
             return null
         }
 
-        return this.readFinish.getTime() - this.readStart.getTime();
+        return this.#readFinish.getTime() - this.#readStart.getTime();
     }
 
     isInitialized(): boolean
     {
-        return typeof this.initialized !== 'undefined'
+        return typeof this.#initialized !== 'undefined'
     }
 }

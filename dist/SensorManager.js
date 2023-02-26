@@ -8,12 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _SensorManager_fireAtStart, _SensorManager_counter, _SensorManager_internalInterval, _SensorManager_middlewares;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SensorManager = void 0;
 class SensorManager {
     constructor(sensor) {
-        this.fireAtStart = false;
-        this.counter = 0;
+        _SensorManager_fireAtStart.set(this, false);
+        _SensorManager_counter.set(this, 0);
+        _SensorManager_internalInterval.set(this, void 0);
+        _SensorManager_middlewares.set(this, []);
         this.sensor = sensor;
         if (!this.sensor.isInitialized()) {
             this.sensor.init();
@@ -21,14 +35,13 @@ class SensorManager {
         this.sensor.on('finish', () => {
             this.execute().catch(console.log);
         });
-        this.middlewares = [];
     }
     setTimeout(timeout) {
         this.timeout = timeout;
         return this;
     }
     setInterval(interval, fireAtStart = false) {
-        this.fireAtStart = fireAtStart;
+        __classPrivateFieldSet(this, _SensorManager_fireAtStart, fireAtStart, "f");
         this.interval = interval;
         return this;
     }
@@ -37,7 +50,7 @@ class SensorManager {
         return this;
     }
     use(...middleware) {
-        this.middlewares.push(...middleware);
+        __classPrivateFieldGet(this, _SensorManager_middlewares, "f").push(...middleware);
         return this;
     }
     run() {
@@ -58,14 +71,14 @@ class SensorManager {
             }
             return 0;
         }
-        if (this.fireAtStart) {
+        if (__classPrivateFieldGet(this, _SensorManager_fireAtStart, "f")) {
             setImmediate(() => {
                 this.runOnce().catch(console.log);
             });
         }
-        this.internalInterval = setInterval(() => {
+        __classPrivateFieldSet(this, _SensorManager_internalInterval, setInterval(() => {
             this.runOnce().catch(console.log);
-        }, this.interval);
+        }, this.interval), "f");
         if (typeof this.timeout !== 'undefined') {
             setTimeout(() => {
                 this.stop();
@@ -74,8 +87,9 @@ class SensorManager {
         return 0;
     }
     runOnce() {
-        this.counter++;
-        if (typeof this.limit !== 'undefined' && this.counter > this.limit) {
+        var _a;
+        __classPrivateFieldSet(this, _SensorManager_counter, (_a = __classPrivateFieldGet(this, _SensorManager_counter, "f"), _a++, _a), "f");
+        if (typeof this.limit !== 'undefined' && __classPrivateFieldGet(this, _SensorManager_counter, "f") > this.limit) {
             return new Promise((resolve, reject) => {
                 this.stop();
                 reject(`[${this.sensor.name}] [ERROR] Limit occurred`);
@@ -84,17 +98,17 @@ class SensorManager {
         return this.sensor.read();
     }
     stop() {
-        if (typeof this.internalInterval !== 'undefined') {
-            clearInterval(this.internalInterval);
+        if (typeof __classPrivateFieldGet(this, _SensorManager_internalInterval, "f") !== 'undefined') {
+            clearInterval(__classPrivateFieldGet(this, _SensorManager_internalInterval, "f"));
         }
     }
     getCounter() {
-        return this.counter;
+        return __classPrivateFieldGet(this, _SensorManager_counter, "f");
     }
     execute() {
         return __awaiter(this, void 0, void 0, function* () {
             let prevIndex = -1;
-            const middlewares = this.middlewares;
+            const middlewares = __classPrivateFieldGet(this, _SensorManager_middlewares, "f");
             const runner = (index) => __awaiter(this, void 0, void 0, function* () {
                 if (index === prevIndex) {
                     throw new Error('next() called multiple times');
@@ -112,3 +126,4 @@ class SensorManager {
     }
 }
 exports.SensorManager = SensorManager;
+_SensorManager_fireAtStart = new WeakMap(), _SensorManager_counter = new WeakMap(), _SensorManager_internalInterval = new WeakMap(), _SensorManager_middlewares = new WeakMap();

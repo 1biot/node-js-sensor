@@ -15,9 +15,7 @@ const getFakeData = function() {
     })
 }
 
-const sensor = new NodeJsSensor.Sensor({
-    name: 'My Custom Sensor'
-})
+const sensor = new NodeJsSensor.Sensor('My Custom Sensor')
 
 sensor.addData('Temperature', '°C') // data[0]
 sensor.addData('Humidity', '%') // data[1]

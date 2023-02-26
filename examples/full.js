@@ -14,9 +14,7 @@ function getFakeData() {
     })
 }
 
-const sensor = new NodeJsSensor.Sensor({
-    name: 'My Custom Sensor'
-})
+const sensor = new NodeJsSensor.Sensor('My Custom Sensor')
 
 sensor.on('init', function(sensorCtx){
     sensorCtx.setInitialized()

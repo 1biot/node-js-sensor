@@ -16,14 +16,10 @@ export declare enum SENSOR_STATE {
 }
 /** Class represents dummy sensor */
 export declare class Sensor extends EventEmitter {
+    #private;
     readonly name: string;
     data: Map<string, SensorData>;
-    private state;
-    private initialized?;
-    private readStart?;
-    private readFinish?;
-    private lastReading?;
-    constructor(options: SensorOptions);
+    constructor(options: string | SensorOptions);
     addData(name: string, unit: string): this;
     init(): this;
     setInitialized(): void;
